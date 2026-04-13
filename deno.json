@@ -1,0 +1,11 @@
+{
+  "tasks": {
+    "cli": "deno run --allow-env --allow-net src/cli.ts",
+    "serve": "deno run --allow-env --allow-net --allow-read src/serve.ts",
+    "fmt": "deno fmt",
+    "lint": "deno lint"
+  },
+  "imports": {
+    "hono": "jsr:@hono/hono@^4"
+  }
+}
