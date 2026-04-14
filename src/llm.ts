@@ -15,23 +15,29 @@ export async function chat(
     throw new Error("KIMI_API_KEY environment variable is not set");
   }
 
+  const payload = {
+    model: MODEL,
+    messages: [{ role: "system", content: systemPrompt }, ...messages],
+  };
+
+  console.error("[KIMI request]", JSON.stringify(payload, null, 2));
+
   const res = await fetch(KIMI_API_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
     },
-    body: JSON.stringify({
-      model: MODEL,
-      messages: [{ role: "system", content: systemPrompt }, ...messages],
-    }),
+    body: JSON.stringify(payload),
   });
 
   if (!res.ok) {
     const body = await res.text();
+    console.error("[KIMI error response]", res.status, body);
     throw new Error(`Kimi API error (${res.status}): ${body}`);
   }
 
   const data = await res.json();
+  console.error("[KIMI response]", JSON.stringify(data, null, 2));
   return data.choices[0].message.content;
 }
