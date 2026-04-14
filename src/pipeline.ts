@@ -30,7 +30,7 @@ async function rawAnswer(messages: Message[]): Promise<string> {
 /** Stage 2: Classify information volume (isolated context). */
 async function classifyVolume(text: string): Promise<Volume> {
   const result = await chat(
-    "Classify the information volume of the following text. How much information is essential to convey the core meaning? Respond with exactly one of: XS, S, M, L.",
+    "Classify the information volume of the following text. How much information is essential to convey the core meaning? Respond with exactly one of: XS, S, M, L. L means fairly complex.",
     [{ role: "user", content: text }],
   );
   const trimmed = result.trim().toUpperCase();
@@ -57,7 +57,7 @@ async function compress(text: string, volume: Volume): Promise<string> {
 /** Stage 4: Final shortening (isolated context). */
 async function shorten(text: string): Promise<string> {
   return await chat(
-    "Make these sentences extremely shorter. It is ok to loose the meaning of the sentences. Output only the shortened text.",
+    "Make each sentence extremely shorter. It is ok to loose the meaning of the sentences. Keep the number of sentences. Drop the punctuation of the last sentence. Output only the shortened text.",
     [{ role: "user", content: text }],
   );
 }

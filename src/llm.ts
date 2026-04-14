@@ -1,5 +1,5 @@
 const KIMI_API_URL = "https://api.moonshot.ai/v1/chat/completions";
-const MODEL = "kimi-k2.5";
+const MODEL = "kimi-k2-turbo-preview";
 
 export type Message = {
   role: "system" | "user" | "assistant";
