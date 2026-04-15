@@ -57,7 +57,7 @@ async function compress(text: string, volume: Volume): Promise<string> {
 /** Stage 4: Final shortening (isolated context). */
 async function shorten(text: string): Promise<string> {
   return await chat(
-    "Make each sentence extremely shorter. It is ok to loose the meaning of the sentences. Keep the number of sentences. Drop the punctuation of the last sentence. Output only the shortened text.",
+    "Make each sentence extremely shorter. Keep the number of sentences. Output only the shortened text.",
     [{ role: "user", content: text }],
   );
 }
