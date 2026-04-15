@@ -4,6 +4,7 @@
     "serve": "deno --env -ENR src/serve.ts"
   },
   "imports": {
-    "hono": "jsr:@hono/hono@^4"
+    "hono": "jsr:@hono/hono@^4",
+    "@std/cli": "jsr:@std/cli@^1"
   }
 }

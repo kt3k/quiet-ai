@@ -1,3 +1,4 @@
+import { Spinner } from "@std/cli/unstable-spinner";
 import { pipeline } from "./pipeline.ts";
 import { type Message, setVerbose } from "./llm.ts";
 
@@ -31,11 +32,15 @@ while (true) {
 
   messages.push({ role: "user", content: line });
 
+  const spinner = new Spinner({ message: "thinking..." });
+  spinner.start();
   try {
     const reply = await pipeline(messages);
+    spinner.stop();
     messages.push({ role: "assistant", content: reply });
     write(reply + "\n");
   } catch (e) {
+    spinner.stop();
     write(`Error: ${(e as Error).message}\n`);
   }
 
