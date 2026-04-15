@@ -12,6 +12,12 @@ export function setVerbose(v: boolean) {
   verbose = v;
 }
 
+let modelOverride: string | undefined;
+
+export function setModel(m: string | undefined) {
+  modelOverride = m;
+}
+
 export async function chat(
   systemPrompt: string,
   messages: Message[],
@@ -21,7 +27,8 @@ export async function chat(
     throw new Error("OPENROUTER_API_KEY environment variable is not set");
   }
 
-  const model = Deno.env.get("OPENROUTER_MODEL") ?? DEFAULT_MODEL;
+  const model = modelOverride ?? Deno.env.get("OPENROUTER_MODEL") ??
+    DEFAULT_MODEL;
 
   const payload = {
     model,

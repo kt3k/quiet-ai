@@ -142,6 +142,10 @@ User Question
 - Conversation history is maintained within the session for context.
 - Type `exit` or press Ctrl+C to quit.
 - Run with: `deno task cli`
+- Flags:
+  - `--model <id>` / `-m <id>`: override the OpenRouter model for this session
+    (e.g. `deno task cli -- -m openai/gpt-4o-mini`).
+  - `--verbose` / `-v`: dump raw OpenRouter request/response payloads to stderr.
 
 ### Web UI
 
@@ -176,6 +180,8 @@ The web UI is the primary deployed artifact. The CLI REPL is for local use only.
   (defaults to `moonshotai/kimi-k2`). Any OpenRouter-supported model id is
   accepted (e.g. `openai/gpt-4o-mini`, `anthropic/claude-sonnet-4.5`,
   `google/gemini-2.5-flash`).
+- The CLI also accepts `--model <id>` / `-m <id>`, which takes precedence over
+  the env var for that run.
 
 ## Non-Goals
 
