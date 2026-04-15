@@ -43,8 +43,10 @@ long-form answer, the bot switches to "verbose mode" and responds at length.
 ## Technical Stack
 
 - **Runtime:** Deno
-- **AI Provider:** Kimi K2.5 (Moonshot AI)
-- **API:** Kimi K2.5 OpenAI-compatible chat completions endpoint
+- **AI Provider:** OpenRouter (multi-vendor gateway; default model
+  `moonshotai/kimi-k2`, overridable)
+- **API:** OpenRouter OpenAI-compatible chat completions endpoint
+  (`https://openrouter.ai/api/v1/chat/completions`)
 - **Web Framework:** Hono (for the web UI backend)
 - **Deployment:** Deno Deploy
 
@@ -168,7 +170,12 @@ The web UI is the primary deployed artifact. The CLI REPL is for local use only.
 
 ## Configuration
 
-- The Kimi API key is read from the `KIMI_API_KEY` environment variable.
+- The OpenRouter API key is read from the `OPENROUTER_API_KEY` environment
+  variable.
+- The model is configurable via the `OPENROUTER_MODEL` environment variable
+  (defaults to `moonshotai/kimi-k2`). Any OpenRouter-supported model id is
+  accepted (e.g. `openai/gpt-4o-mini`, `anthropic/claude-sonnet-4.5`,
+  `google/gemini-2.5-flash`).
 
 ## Non-Goals
 

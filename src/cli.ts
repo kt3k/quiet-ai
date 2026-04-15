@@ -1,5 +1,8 @@
 import { pipeline } from "./pipeline.ts";
-import type { Message } from "./llm.ts";
+import { type Message, setVerbose } from "./llm.ts";
+
+const verbose = Deno.args.includes("--verbose") || Deno.args.includes("-v");
+setVerbose(verbose);
 
 const messages: Message[] = [];
 const encoder = new TextEncoder();

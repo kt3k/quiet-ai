@@ -1,28 +1,38 @@
-const KIMI_API_URL = "https://api.moonshot.ai/v1/chat/completions";
-const MODEL = "kimi-k2-turbo-preview";
+const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
+const DEFAULT_MODEL = "moonshotai/kimi-k2";
 
 export type Message = {
   role: "system" | "user" | "assistant";
   content: string;
 };
 
+let verbose = false;
+
+export function setVerbose(v: boolean) {
+  verbose = v;
+}
+
 export async function chat(
   systemPrompt: string,
   messages: Message[],
 ): Promise<string> {
-  const apiKey = Deno.env.get("KIMI_API_KEY");
+  const apiKey = Deno.env.get("OPENROUTER_API_KEY");
   if (!apiKey) {
-    throw new Error("KIMI_API_KEY environment variable is not set");
+    throw new Error("OPENROUTER_API_KEY environment variable is not set");
   }
 
+  const model = Deno.env.get("OPENROUTER_MODEL") ?? DEFAULT_MODEL;
+
   const payload = {
-    model: MODEL,
+    model,
     messages: [{ role: "system", content: systemPrompt }, ...messages],
   };
 
-  console.error("[KIMI request]", JSON.stringify(payload, null, 2));
+  if (verbose) {
+    console.error("[OpenRouter request]", JSON.stringify(payload, null, 2));
+  }
 
-  const res = await fetch(KIMI_API_URL, {
+  const res = await fetch(OPENROUTER_API_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -33,11 +43,15 @@ export async function chat(
 
   if (!res.ok) {
     const body = await res.text();
-    console.error("[KIMI error response]", res.status, body);
-    throw new Error(`Kimi API error (${res.status}): ${body}`);
+    if (verbose) {
+      console.error("[OpenRouter error response]", res.status, body);
+    }
+    throw new Error(`OpenRouter API error (${res.status}): ${body}`);
   }
 
   const data = await res.json();
-  console.error("[KIMI response]", JSON.stringify(data, null, 2));
+  if (verbose) {
+    console.error("[OpenRouter response]", JSON.stringify(data, null, 2));
+  }
   return data.choices[0].message.content;
 }
