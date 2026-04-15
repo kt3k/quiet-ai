@@ -7,7 +7,8 @@
 - Sub-agents (Stage 2, 4) operate in isolated context — no conversation history
   leaked
 - Verbose mode bypasses pipeline, returns raw answer directly
-- Kimi K2.5 via OpenAI-compatible API, key from `KIMI_API_KEY` env var
+- OpenRouter OpenAI-compatible API, key from `OPENROUTER_API_KEY` env var, model
+  from `OPENROUTER_MODEL` (default `moonshotai/kimi-k2`)
 - CLI REPL with session-scoped conversation history
 - Web UI: single-page chat with Hono backend, chat bubble layout
 - Deploy to Deno Deploy (web UI only; CLI is local-only)
