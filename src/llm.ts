@@ -6,6 +6,12 @@ export type Message = {
   content: string;
 };
 
+let verbose = false;
+
+export function setVerbose(v: boolean) {
+  verbose = v;
+}
+
 export async function chat(
   systemPrompt: string,
   messages: Message[],
@@ -22,7 +28,9 @@ export async function chat(
     messages: [{ role: "system", content: systemPrompt }, ...messages],
   };
 
-  console.error("[OpenRouter request]", JSON.stringify(payload, null, 2));
+  if (verbose) {
+    console.error("[OpenRouter request]", JSON.stringify(payload, null, 2));
+  }
 
   const res = await fetch(OPENROUTER_API_URL, {
     method: "POST",
@@ -35,11 +43,15 @@ export async function chat(
 
   if (!res.ok) {
     const body = await res.text();
-    console.error("[OpenRouter error response]", res.status, body);
+    if (verbose) {
+      console.error("[OpenRouter error response]", res.status, body);
+    }
     throw new Error(`OpenRouter API error (${res.status}): ${body}`);
   }
 
   const data = await res.json();
-  console.error("[OpenRouter response]", JSON.stringify(data, null, 2));
+  if (verbose) {
+    console.error("[OpenRouter response]", JSON.stringify(data, null, 2));
+  }
   return data.choices[0].message.content;
 }
