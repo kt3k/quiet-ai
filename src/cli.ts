@@ -1,9 +1,16 @@
 import { Spinner } from "@std/cli/unstable-spinner";
+import { parseArgs } from "@std/cli/parse-args";
 import { pipeline } from "./pipeline.ts";
-import { type Message, setVerbose } from "./llm.ts";
+import { type Message, setModel, setVerbose } from "./llm.ts";
 
-const verbose = Deno.args.includes("--verbose") || Deno.args.includes("-v");
-setVerbose(verbose);
+const flags = parseArgs(Deno.args, {
+  boolean: ["verbose"],
+  string: ["model"],
+  alias: { verbose: "v", model: "m" },
+});
+
+setVerbose(flags.verbose);
+if (flags.model) setModel(flags.model);
 
 const messages: Message[] = [];
 const encoder = new TextEncoder();
